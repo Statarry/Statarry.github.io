@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🔍 王室热搜</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f1f3f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+.search-container {
+    width: 100%;
+    max-width: 720px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+    padding: 32px 30px 40px;
+}
+.search-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e8eaed;
+}
+.search-header .brand-icon { font-size: 26px; }
+.search-header .brand-text { font-size: 18px; font-weight: 500; color: #202124; }
+.search-header .brand-text span { color: #1a73e8; font-weight: 600; }
+.search-header .brand-tag { margin-left: auto; font-size: 12px; color: #5f6368; background: #f1f3f4; padding: 4px 12px; border-radius: 12px; }
+.search-box-wrapper {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 2px solid #dadce0;
+    border-radius: 30px;
+    padding: 4px 8px 4px 20px;
+    transition: border-color 0.25s;
+}
+.search-box-wrapper:focus-within {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 4px rgba(26,115,232,0.15);
+}
+.search-box-wrapper .search-icon { font-size: 20px; color: #9aa0a6; margin-right: 10px; }
+.search-box-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    padding: 14px 0;
+    background: transparent;
+    color: #202124;
+}
+.search-box-wrapper input::placeholder { color: #9aa0a6; }
+.search-box-wrapper .search-btn {
+    background: #1a73e8;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 8px;
+}
+.search-box-wrapper .search-btn:hover { background: #1557b0; }
+.result-stats {
+    margin-top: 28px;
+    font-size: 15px;
+    color: #5f6368;
+    min-height: 30px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.result-stats.show { opacity: 1; }
+.result-list { margin-top: 6px; display: flex; flex-direction: column; gap: 0; }
+.result-item {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f1f3f4;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: resultFadeIn 0.40s ease forwards;
+}
+.result-item:nth-child(1) { animation-delay: 0.05s; }
+.result-item:nth-child(2) { animation-delay: 0.12s; }
+.result-item:nth-child(3) { animation-delay: 0.19s; }
+.result-item:nth-child(4) { animation-delay: 0.26s; }
+@keyframes resultFadeIn {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.result-item .result-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a0dab;
+    margin-bottom: 3px;
+}
+.result-item .result-snippet {
+    font-size: 15px;
+    color: #3c4043;
+    line-height: 1.6;
+    margin-top: 2px;
+    display: block;
+}
+.result-item .result-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #5f6368;
+}
+.result-item .result-meta .tag {
+    background: #e8eaed;
+    padding: 1px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #3c4043;
+}
+.loading-placeholder { display: none; text-align: center; padding: 40px 0; color: #5f6368; }
+.loading-placeholder.active { display: block; }
+.loading-placeholder .spinner {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e8eaed;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 10px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.no-results { display: none; text-align: center; padding: 30px 0; color: #5f6368; }
+.search-footer {
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid #e8eaed;
+    font-size: 13px;
+    color: #9aa0a6;
+    text-align: center;
+}
+.search-footer .heart { color: #ea4335; }
+</style>
+</head>
+<body>
+<div class="search-container">
+    <div class="search-header">
+        <span class="brand-icon">👑</span>
+        <span class="brand-text">王室<span>热搜</span></span>
+        <span class="brand-tag">📰 今日头条</span>
+    </div>
+    <div class="search-box-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" value="菲国Xavier" autocomplete="off" aria-label="搜索输入框" />
+        <button class="search-btn" id="searchBtn">⌕ 搜索</button>
+    </div>
+    <div class="loading-placeholder" id="loadingIndicator"><div class="spinner"></div><div>正在检索王室档案...</div></div>
+    <div class="result-stats" id="resultStats"></div>
+    <div class="result-list" id="resultList"></div>
+    <div class="no-results" id="noResults"><span class="emoji">🔎</span> 未找到相关记录</div>
+    <div class="search-footer"><span class="heart">♥</span> 共找到 <span id="resultCountDisplay">0</span> 条相关报道</div>
+</div>
+<script>
+(function() {
+    const DISPLAY_COUNT = 1016;  // 显示数量
+
+    const PRESET_RESULTS = [
+        { title: '📰 聚光灯下，王子的人生没有选择权。', snippet: 'Xavier王子被曝已入读皇家关系学院，但据热心市民透露，王子或将转入天文学专业……', tag: '王室动态' },
+        { title: '🛡️ 王子几度遇刺，保镖集体失职，警方已介入调查', snippet: 'Xavier王子本月第三次遇刺，依然毫发无伤。刺客说“我明明瞄得很准”，王子回：“你上周那位同事也这么讲。”', tag: '社会新闻' },
+        { title: '☕ 最帅落难王子现身咖啡店打工，顾客为看他一眼排起长队', snippet: '与王室决裂后，Xavier王子靠校外兼职养活自己。老板偷偷透露：招来个门面担当。', tag: '民生·趣闻' },
+        { title: '🎓 学业未受家变影响，王子修满学分或将提前毕业', snippet: '校方澄清：王子提前毕业合规有效，所有学分均为自主修读，无特权之说。据了解，其在校期间勤勉修读，课余时间亦用于补修学分，最终学分绩点居专业前列。', tag: '教育·澄清' }
+    ];
+
+    const inputEl = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const resultList = document.getElementById('resultList');
+    const resultStats = document.getElementById('resultStats');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const noResults = document.getElementById('noResults');
+    const resultCountDisplay = document.getElementById('resultCountDisplay');
+
+    let isSearching = false;
+
+    function renderResults(results) {
+        resultList.innerHTML = '';
+        noResults.style.display = 'none';
+        if (!results || results.length === 0) {
+            noResults.style.display = 'block';
+            resultStats.classList.remove('show');
+            resultStats.textContent = '';
+            resultCountDisplay.textContent = '0';
+            return;
+        }
+        resultStats.textContent = `找到约 ${DISPLAY_COUNT} 条结果 (用时 0.${Math.floor(Math.random() * 30 + 10)} 秒)`;
+        resultStats.classList.add('show');
+        resultCountDisplay.textContent = DISPLAY_COUNT;
+
+        results.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+            const title = document.createElement('div');
+            title.className = 'result-title';
+            title.textContent = item.title;
+            div.appendChild(title);
+            const snippet = document.createElement('span');
+            snippet.className = 'result-snippet';
+            snippet.textContent = item.snippet;
+            div.appendChild(snippet);
+            const meta = document.createElement('div');
+            meta.className = 'result-meta';
+            if (item.tag) {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'tag';
+                tagSpan.textContent = item.tag;
+                meta.appendChild(tagSpan);
+            }
+            const sourceSpan = document.createElement('span');
+            sourceSpan.textContent = '📌 王室特派 · 独家报道';
+            meta.appendChild(sourceSpan);
+            div.appendChild(meta);
+            resultList.appendChild(div);
+        });
+    }
+
+    function performSearch(query) {
+        if (isSearching) return;
+        const trimmed = query.trim();
+        if (!trimmed) {
+            inputEl.style.borderColor = '#d93025';
+            setTimeout(() => { inputEl.style.borderColor = ''; }, 600);
+            return;
+        }
+        isSearching = true;
+        loadingIndicator.classList.add('active');
+        resultList.innerHTML = '';
+        resultStats.classList.remove('show');
+        resultStats.textContent = '';
+        noResults.style.display = 'none';
+
+        setTimeout(() => {
+            loadingIndicator.classList.remove('active');
+            const results = PRESET_RESULTS.slice();
+            renderResults(results);
+            isSearching = false;
+            if (trimmed.toLowerCase().includes('彩蛋') || trimmed.toLowerCase().includes('秘密')) {
+                const egg = {
+                    title: '🥚 你发现了隐藏的彩蛋！',
+                    snippet: '「在无数条王室新闻的夹缝中，有一条从未被公开的录音——Xavier王子曾在深夜独自弹奏一首不知名的曲子。」',
+                    tag: '✨ 绝密档案'
+                };
+                const newResults = results.concat(egg);
+                renderResults(newResults);
+                const eggCount = DISPLAY_COUNT + 1;
+                resultStats.textContent = `找到约 ${eggCount} 条结果 (含 1 条隐藏记录)`;
+                resultStats.classList.add('show');
+                resultCountDisplay.textContent = eggCount;
+            }
+        }, 600 + Math.random() * 400);
+    }
+
+    searchBtn.addEventListener('click', e => { e.preventDefault(); performSearch(inputEl.value); });
+    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); performSearch(inputEl.value); } });
+
+    window.addEventListener('load', function() {
+        performSearch(inputEl.value);
+    });
+})();
+</script>
+</body>
+</html>
