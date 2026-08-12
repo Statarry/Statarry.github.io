@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🎓 王子提前毕业 · 独家报道</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Georgia', 'Times New Roman', 'Segoe UI', serif;
+    background: #f5f3f0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+.article-container {
+    max-width: 780px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    padding: 40px 36px 48px;
+}
+.article-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e8eaed;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.article-nav .back-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+}
+.article-nav .back-link:hover {
+    color: #1557b0;
+    text-decoration: underline;
+}
+.article-nav .source-tag {
+    font-size: 13px;
+    color: #5f6368;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f1f3f4;
+    padding: 4px 14px;
+    border-radius: 16px;
+}
+.article-header {
+    margin-bottom: 24px;
+}
+.article-header .category {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: #1a73e8;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.article-header h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #202124;
+    line-height: 1.3;
+    margin-bottom: 8px;
+}
+.article-header .subtitle {
+    font-size: 18px;
+    color: #5f6368;
+    font-weight: 400;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.article-header .byline {
+    margin-top: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: #5f6368;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.article-header .byline .date {
+    color: #9aa0a6;
+}
+.article-image {
+    margin: 24px 0 32px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #e8eaed;
+    line-height: 0;
+}
+.article-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.article-image .caption {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: #5f6368;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    line-height: 1.5;
+}
+.article-body {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #1e1e1e;
+}
+.article-body p {
+    margin-bottom: 18px;
+    text-indent: 2em;
+}
+.article-body p:first-of-type {
+    text-indent: 0;
+}
+.article-body .dropcap::first-letter {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a73e8;
+    float: left;
+    margin-right: 6px;
+    line-height: 1;
+    margin-top: 2px;
+}
+.article-body .highlight-box {
+    background: #f8f9fa;
+    border-left: 4px solid #1a73e8;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 16px;
+    color: #3c4043;
+    border-radius: 0 8px 8px 0;
+    text-indent: 0;
+}
+.article-body .highlight-box strong {
+    color: #202124;
+}
+.article-body .quote {
+    font-style: italic;
+    color: #3c4043;
+    padding-left: 20px;
+    border-left: 3px solid #dadce0;
+    margin: 18px 0;
+    text-indent: 0;
+}
+.article-body .quote strong {
+    font-style: normal;
+}
+.article-footer {
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid #e8eaed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: #5f6368;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.article-footer .footer-tag {
+    background: #e8eaed;
+    padding: 2px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #3c4043;
+}
+.article-footer .back-bottom {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+}
+.article-footer .back-bottom:hover {
+    text-decoration: underline;
+}
+@media (max-width: 600px) {
+    body { padding: 16px 12px; }
+    .article-container { padding: 24px 18px 32px; border-radius: 18px; }
+    .article-header h1 { font-size: 24px; }
+    .article-header .subtitle { font-size: 16px; }
+    .article-body { font-size: 16px; line-height: 1.75; }
+    .article-body .dropcap::first-letter { font-size: 38px; }
+    .article-nav .back-link { font-size: 14px; }
+    .article-footer { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 400px) {
+    .article-container { padding: 18px 14px 24px; }
+    .article-header h1 { font-size: 21px; }
+    .article-body { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+<div class="article-container">
+    <div class="article-nav">
+        <span class="back-link" style="cursor:default;">← 返回搜索结果</span>
+        <span class="source-tag">📌 王室特派 · 独家</span>
+    </div>
+    <div class="article-header">
+        <div class="category">📰 教育 · 澄清</div>
+        <h1>学业未受家变影响，王子修满学分或将提前毕业</h1>
+        <div class="subtitle">校方澄清：合规有效，无特权之说</div>
+        <div class="byline">
+            <span>📝 王室特派记者</span>
+            <span class="date">· 2026年8月12日</span>
+        </div>
+    </div>
+    <div class="article-image">
+        <img src="https://statarry.github.io/article4%20photo.jpg" alt="Xavier王子在校园中的背影" loading="lazy" />
+        <div class="caption">▲ Xavier王子近日被目击出现在校园图书馆，神情专注。 · 图片来源：王室特派</div>
+    </div>
+    <div class="article-body">
+        <p class="dropcap">近日，针对外界关于王子提前毕业是否涉及特殊照顾的议论，校方正式作出澄清。</p>
+        <p>校方发言人表示，王子提前毕业一事系依据学分修读情况作出的程序性认定，所有课程成绩均以公开考核为基准，经过教务部门多次复核，完全符合学校规章制度，不存在任何特殊安排或特权之说。</p>
+        <p>据了解，王子在校期间勤勉修读，按规定完成全部学分修读，最终平均绩点稳居专业前列。其毕业论文答辩亦获评优秀，学术能力获得评审委员会一致认可。</p>
+        <div class="highlight-box"><strong>发言人强调：</strong>"学校对所有学生一视同仁，评价标准公开透明。Xavier同学的毕业资格经得起核查。"</div>
+        <p>记者在校内随机采访了多位学生，多数受访者对王子的印象颇为一致。</p>
+        <div class="quote">"哼，这就是我们贵族正统血脉。普通平民也敢妄议皇家作为？"<br /><strong>—— 伊同学 · 皇家关系专业</strong></div>
+        <p>不过也有学生对王子脱离家族一事颇感不满。一名不愿具名的同学情绪激动：</p>
+        <div class="quote">"脱离王族！他迟早有一天会后悔的，我会向他证明，他将败于他所坚持的伪善——"<br /><strong>—— 该校同学（不愿具名）</strong></div>
+        <p>所幸被本报记者及时打断，并未造成不良影响。</p>
+        <p>也有不少从小看着王子长大的国民留言表达心疼：</p>
+        <div class="quote">"他出生那天我守在电视前看的直播，牙牙学语的照片我还存着呢。现在看着他在咖啡店打工，心里说不出的滋味。"</div>
+        <p>也有网友表示支持：</p>
+        <div class="quote">"他不是那种娇生惯养的人，从小就看得出来。当年媒体报道他出生时都不哭，我就知道他是个有主意的孩子。"</div>
+        <p>据知情人士邱同学透露，王子本人对提前毕业一事态度低调，目前正着手准备毕业后的规划。至于是否返回王室，他未作回应。</p>
+        <p style="color:#5f6368; font-style:italic; text-indent:0;">截至发稿，王室方面未就此事发表评论。</p>
+    </div>
+    <div class="article-footer">
+        <span class="footer-tag">🎓 教育 · 澄清</span>
+        <span style="color:#9aa0a6;">阅读完毕</span>
+    </div>
+</div>
+</body>
+</html>
